@@ -1,0 +1,46 @@
+# 1. 依賴套件 (絕對不能進 Git)
+node_modules/
+
+# 2. TypeScript 編譯輸出的檔案 (只保留原始碼，編譯結果由 CI/CD 或部署時產生)
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# 3. 測試覆蓋率報告 (Jest 產生)
+coverage/
+
+# 4. 環境變數與機密資訊 (保護金鑰)
+.env
+.env.test
+.env.local
+.env.development
+.env.production
+
+# 5. 錯誤日誌檔 (npm 或執行時產生)
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 6. 作業系統產生的暫存檔
+.DS_Store
+Thumbs.db
+
+# 7. 編輯器設定 (視團隊情況，通常不共用個人的 IDE 設定)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 8. 專案過程中產生的臨時測試檔 (例如我們剛才寫測試用的)
+test-mock-words.txt
