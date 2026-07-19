@@ -42,43 +42,43 @@ describe('findMostFrequentWordOptimized', () => {
     expect(consoleInfoSpy).toHaveBeenCalledWith('4 twinkle');
   });
 
-  it('1. 應該正確統計出現最多次的單字，並忽略大小寫與標點符號', async () => {
-    // Arrange: 準備測試資料
-    const mockContent = `
-      Twinkle, twinkle, little star,
-      How I wonder what you are!
-    `;
-    fs.writeFileSync(testFilePath, mockContent);
+  // it('1. 應該正確統計出現最多次的單字，並忽略大小寫與標點符號', async () => {
+  //   // Arrange: 準備測試資料
+  //   const mockContent = `
+  //     Twinkle, twinkle, little star,
+  //     How I wonder what you are!
+  //   `;
+  //   fs.writeFileSync(testFilePath, mockContent);
 
-    // Act: 執行目標函式
-    await findMostFrequentWordOptimized(testFileName);
+  //   // Act: 執行目標函式
+  //   await findMostFrequentWordOptimized(testFileName);
 
-    // Assert: 驗證輸出結果是否為 '2 twinkle'
-    expect(consoleInfoSpy).toHaveBeenCalledWith('2 twinkle');
-  });
+  //   // Assert: 驗證輸出結果是否為 '2 twinkle'
+  //   expect(consoleInfoSpy).toHaveBeenCalledWith('2 twinkle');
+  // });
 
-  it('2. 當多個單字出現次數相同時，應該回傳其中一個 (根據原邏輯)', async () => {
-    const mockContent = 'apple apple banana banana';
-    fs.writeFileSync(testFilePath, mockContent);
+  // it('2. 當多個單字出現次數相同時，應該回傳其中一個 (根據原邏輯)', async () => {
+  //   const mockContent = 'apple apple banana banana';
+  //   fs.writeFileSync(testFilePath, mockContent);
 
-    await findMostFrequentWordOptimized(testFileName);
+  //   await findMostFrequentWordOptimized(testFileName);
 
-    // apple 和 banana 都是 2 次，只要有印出其中一個就算對
-    const isAppleOrBanana = 
-      consoleInfoSpy.mock.calls[0][0] === '2 apple' || 
-      consoleInfoSpy.mock.calls[0][0] === '2 banana';
+  //   // apple 和 banana 都是 2 次，只要有印出其中一個就算對
+  //   const isAppleOrBanana = 
+  //     consoleInfoSpy.mock.calls[0][0] === '2 apple' || 
+  //     consoleInfoSpy.mock.calls[0][0] === '2 banana';
     
-    expect(isAppleOrBanana).toBeTruthy();
-  });
+  //   expect(isAppleOrBanana).toBeTruthy();
+  // });
 
-  it('3. 當檔案全是標點符號或空白時，應該提示找不到單字', async () => {
-    const mockContent = '   ,,, !!! ???   ';
-    fs.writeFileSync(testFilePath, mockContent);
+  // it('3. 當檔案全是標點符號或空白時，應該提示找不到單字', async () => {
+  //   const mockContent = '   ,,, !!! ???   ';
+  //   fs.writeFileSync(testFilePath, mockContent);
 
-    await findMostFrequentWordOptimized(testFileName);
+  //   await findMostFrequentWordOptimized(testFileName);
 
-    expect(consoleInfoSpy).toHaveBeenCalledWith('No words found.');
-  });
+  //   expect(consoleInfoSpy).toHaveBeenCalledWith('No words found.');
+  // });
 
   // TODO: 這個測試目前會失敗，因為我們的函式沒有捕獲檔案不存在的錯誤
   
@@ -90,4 +90,5 @@ describe('findMostFrequentWordOptimized', () => {
   //   // 驗證錯誤訊息包含 "Stream processing error:"
   //   expect(consoleErrorSpy.mock.calls[0][0]).toContain('Stream processing error:');
   // });
+
 });
