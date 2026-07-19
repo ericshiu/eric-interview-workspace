@@ -44,3 +44,5 @@ Thumbs.db
 
 # 8. 專案過程中產生的臨時測試檔 (例如我們剛才寫測試用的)
 test-mock-words.txt
+
+.terraform

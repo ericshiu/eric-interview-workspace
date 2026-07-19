@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platform.fullname" . }}-deploy
+  namespace: asiayo
+spec:
+  replicas: {{ .Values.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      app: asiayo-web
+  template:
+    metadata:
+      labels:
+        app: asiayo-web
+    spec:
+      containers:
+        - name: web
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            # Database 的連線資訊
+            - name: DB_HOST
+              value: "{{ .Values.env.DB_WRITE_HOST }}"
+          volumeMounts:
+            - name: platform-storage
+              mountPath: /app/data
+      # PVC
+      volumes:
+        - name: platform-storage
+          persistentVolumeClaim:
+            claimName: {{ include "platform.fullname" . }}-pvc

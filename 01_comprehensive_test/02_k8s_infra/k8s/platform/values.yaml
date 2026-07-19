@@ -1,0 +1,14 @@
+replicaCount: 2  # 建議至少 2 個確保高可用性
+image:
+  # nginx 做測試
+  repository: nginx 
+  tag: "latest"
+env:
+  # 寫入專用的 Primary DB
+  DB_WRITE_HOST: "my-db-mysql-primary.asiayo.svc.cluster.local"
+  # 讀取專用的 Secondary DB
+  DB_READ_HOST: "my-db-mysql-secondary.asiayo.svc.cluster.local"
+  DB_PORT: "3306"
+persistence:
+  # 測試大小
+  size: 10Gi

@@ -1,0 +1,51 @@
+mysql:
+  architecture: replication
+  
+  auth:
+    rootPassword: "password"
+    username: "app_user"
+    password: "app_password"
+    database: "asiayo_db"
+    
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+    # 配置拓撲分佈約束，確保 Primary 與其他節點跨 AZ 分散
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mysql
+            app.kubernetes.io/instance: my-db
+            
+  secondary:
+    replicaCount: 2  # 2 個從節點 + 1 個主節點 = 剛好分佈在 3 個 AZ
+
+
+    #必須遵守相同的 Node 互斥規則
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution: 
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/instance: my-db
+            topologyKey: kubernetes.io/hostname
+
+    # 同樣設定拓撲約束，強制 Secondary Pod 散佈到不同的 AZ
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway # 如果某個 AZ 資源不足，允許退一步排程在同 AZ，避免服務起不來 (生產環境若要求絕對隔離可改為 DoNotSchedule)
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mysql
+            app.kubernetes.io/instance: my-db
+            
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
